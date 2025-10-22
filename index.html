@@ -1,0 +1,642 @@
+
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para mi Amor</title>
+    <style>
+        @font-face {
+            font-family: 'NeonHandwritten';
+            src: url('https://fonts.cdnfonts.com/s/72895/AvertaDemo-Regular.woff') format('woff');
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: #000;
+            font-family: 'NeonHandwritten', cursive;
+            color: #fff;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        /* Créditos en la parte inferior */
+        #credits {
+            position: relative;
+            z-index: 20;
+            text-align: center;
+            padding: 8px;
+            font-size: 1em;
+            text-shadow: 0 0 6px #ff00ff, 0 0 12px #ffff00;
+            color: #ffffff;
+            font-weight: bold;
+            letter-spacing: 1px;
+            animation: glowCredits 2s infinite alternate;
+        }
+
+        @keyframes glowCredits {
+            from { text-shadow: 0 0 6px #ff00ff, 0 0 12px #ffff00; }
+            to { text-shadow: 0 0 10px #00ffff, 0 0 20px #ff00ff; }
+        }
+
+        /* Fondo estrellado mejorado */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000 url('https://www.transparenttextures.com/patterns/stardust.png');
+            background-repeat: repeat;
+            animation: moveStars 120s linear infinite;
+            z-index: -3;
+        }
+
+        .twinkle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 4px white, 0 0 8px white;
+            animation: twinkle 3s infinite;
+            z-index: -2;
+        }
+
+        /* Luciérnagas volando */
+        .firefly {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #ffff00;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #ffff00, 0 0 20px #ff00ff;
+            opacity: 0.8;
+            z-index: -1;
+            animation: fly 25s infinite linear;
+        }
+
+        /* Estrellas fugaces */
+        .shooting-star {
+            position: absolute;
+            top: -10px;
+            width: 2px;
+            height: 60px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), white, rgba(255,255,255,0));
+            border-radius: 50%;
+            box-shadow: 0 0 10px white;
+            z-index: -1;
+            animation: shoot 5s infinite;
+        }
+
+        @keyframes moveStars {
+            from { transform: translateY(0); }
+            to { transform: translateY(-1000px); }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes fly {
+            0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.9; }
+            100% { transform: translate(var(--tx), var(--ty)) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes shoot {
+            0% { left: -100px; opacity: 0; }
+            10% { opacity: 1; }
+            100% { left: calc(100vw + 100px); opacity: 0; }
+        }
+
+        #content-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            perspective: 500px;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .element {
+            position: absolute;
+            white-space: nowrap;
+            font-size: 1.6em;
+            font-weight: bold;
+            opacity: 0;
+            animation: fadeIn 2s forwards, float 20s infinite ease-in-out;
+            transform: translateZ(0);
+            will-change: transform, opacity;
+            cursor: pointer;
+            max-width: 80vw;
+            text-align: center;
+            z-index: 5;
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 500px) {
+            .element {
+                font-size: 1.2em;
+            }
+            .heart {
+                font-size: 2em !important;
+            }
+        }
+
+        .element.pink-neon {
+            text-shadow: 0 0 10px #d400ff, 0 0 20px #ae00ff, 0 0 30px #d400ff;
+            color: #fbff00;
+        }
+
+        .element.blue-neon {
+            text-shadow: 0 0 10px #c8ff00, 0 0 20px #c8ff00, 0 0 30px #c8ff00;
+            color: #ae00ff;
+        }
+
+        .heart {
+            font-size: 2.2em;
+            text-shadow: 0 0 10px #d0ff00, 0 0 20px #ae00ff, 0 0 30px #fffb00;
+            color: #b700ff;
+        }
+
+        .photo {
+            border: 2px solid #ae00ff;
+            border-radius: 12px;
+            box-shadow: 0 0 12px #d9ff00, 0 0 24px #c300ff;
+            overflow: hidden;
+            transform: translateZ(0);
+            max-width: 100px;
+        }
+
+        .photo img {
+            display: block;
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.5) translateZ(100px); }
+            to { opacity: 1; transform: scale(1) translateZ(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(1deg); }
+        }
+
+        .fade-out {
+            animation: fadeOut 0.5s forwards;
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(0); }
+        }
+
+        #start-button-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.85);
+            z-index: 10;
+        }
+
+        #start-button {
+            padding: 14px 28px;
+            font-size: 1.4em;
+            background: linear-gradient(45deg, #cc00ff, #fbff00);
+            color: #000;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 0 12px #fbff00, 0 0 24px #cc00ff;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        #start-button:hover {
+            transform: scale(1.08);
+        }
+
+        .particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            pointer-events: none;
+            background: radial-gradient(circle, #fff 60%, #ae00ff 100%);
+            opacity: 0.9;
+            z-index: 100;
+            animation: particle-explode 0.8s forwards;
+        }
+
+        @keyframes particle-explode {
+            from {
+                opacity: 0.9;
+                transform: scale(1) translate(0,0);
+            }
+            to {
+                opacity: 0;
+                transform: scale(0.5) translate(var(--dx), var(--dy));
+            }
+        }
+
+        #romantic-modal,
+        #happy-modal {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: transparent;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        #romantic-modal-content,
+        #happy-modal > div {
+            background: #1a0033e6;
+            color: #fff;
+            padding: 20px 16px;
+            border-radius: 16px;
+            box-shadow: 0 0 20px #ae00ff, 0 0 40px #fbff00;
+            font-size: 1.8em;
+            text-align: center;
+            max-width: 320px;
+            width: 88vw;
+            margin: auto;
+            position: relative;
+            pointer-events: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #romantic-modal-content p,
+        #happy-modal p {
+            margin: 0 0 16px 0;
+            font-size: 1.3em;
+            word-break: break-word;
+        }
+
+        .modal-btn {
+            margin: 6px 10px 0 10px;
+            padding: 8px 22px;
+            font-size: 1em;
+            background: #ae00ff;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 0 10px #fbff00;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .modal-btn:hover {
+            background: #fbff00;
+            color: #ae00ff;
+        }
+
+        .bubble {
+            position: absolute;
+            left: 50%; top: 50%;
+            transform: translate(-50%, -50%);
+            background: #fbff00;
+            color: #ae00ff;
+            border-radius: 50px;
+            padding: 10px 20px;
+            font-size: 1em;
+            box-shadow: 0 0 10px #ae00ff;
+            opacity: 0.9;
+            pointer-events: none;
+            animation: bubble-float 1.2s forwards;
+            z-index: 10000;
+            white-space: nowrap;
+            font-weight: bold;
+        }
+
+        @keyframes bubble-float {
+            0% { opacity: 0.9; transform: translate(-50%, -50%) scale(1);}
+            80% { opacity: 0.9;}
+            100% { opacity: 0; transform: translate(-50%, -120%) scale(1.3);}
+        }
+
+        @media (max-width: 500px) {
+            #romantic-modal-content,
+            #happy-modal > div {
+                font-size: 1em;
+                padding: 14px 8px;
+                max-width: 92vw;
+            }
+            .modal-btn {
+                font-size: 0.9em;
+                padding: 6px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="background-music" loop>
+        <source src="https://github.com/Baque2005/public-files/raw/refs/heads/main/2025/Si%20supieras%20lo%20que%20siento%20con%20mirarte%20-%20Gonzalo%20%C3%81vila%20%20(Lyrics)%20-%20Oldtimes.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="start-button-container">
+        <button id="start-button">Toca para comenzar</button>
+    </div>
+
+    <div class="stars" id="stars-bg"></div>
+    <div id="content-container"></div>
+
+    <div id="credits">➪Vic ❤ Persi</div>
+
+    <div id="romantic-modal">
+        <div id="romantic-modal-content">
+            <p>¿Me perdonas?
+                Vic ❤ Persi
+            </p>
+            <div>
+                <button id="modal-si-btn" class="modal-btn">si</button>
+                <button id="modal-no-btn" class="modal-btn">no</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="happy-modal">
+        <div>
+            <p>Siempre te haré feliz</p>
+            <button id="close-happy-btn" class="modal-btn">Cerrar</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const startButton = document.getElementById('start-button');
+            const startContainer = document.getElementById('start-button-container');
+            const music = document.getElementById('background-music');
+            const starsBg = document.getElementById('stars-bg');
+            let colorIndex = 0;
+
+            // Crear efectos ambientales
+            function createAmbientEffects() {
+                // Luciérnagas
+                for (let i = 0; i < 25; i++) {
+                    const firefly = document.createElement('div');
+                    firefly.classList.add('firefly');
+                    const tx = (Math.random() - 0.5) * 200 + (Math.random() > 0.5 ? window.innerWidth : -200);
+                    const ty = (Math.random() - 0.5) * 200 + (Math.random() > 0.5 ? window.innerHeight : -200);
+                    firefly.style.setProperty('--tx', tx + 'px');
+                    firefly.style.setProperty('--ty', ty + 'px');
+                    firefly.style.left = Math.random() * 100 + '%';
+                    firefly.style.top = Math.random() * 100 + '%';
+                    firefly.style.animationDelay = Math.random() * 10 + 's';
+                    firefly.style.animationDuration = (20 + Math.random() * 15) + 's';
+                    document.body.appendChild(firefly);
+                }
+
+                // Estrellas fugaces
+                for (let i = 0; i < 12; i++) {
+                    const star = document.createElement('div');
+                    star.classList.add('shooting-star');
+                    star.style.top = Math.random() * 100 + '%';
+                    star.style.animationDelay = Math.random() * 15 + 's';
+                    star.style.animationDuration = (3 + Math.random() * 4) + 's';
+                    document.body.appendChild(star);
+                }
+
+                // Estrellas parpadeantes
+                for (let i = 0; i < 120; i++) {
+                    const twinkleStar = document.createElement('div');
+                    twinkleStar.classList.add('twinkle');
+                    twinkleStar.style.left = `${Math.random() * 100}%`;
+                    twinkleStar.style.top = `${Math.random() * 100}%`;
+                    twinkleStar.style.animationDelay = `${Math.random() * 5}s`;
+                    starsBg.appendChild(twinkleStar);
+                }
+            }
+
+            startButton.addEventListener('click', () => {
+                music.play().catch(e => console.log("Autoplay blocked, but user initiated."));
+                startContainer.style.display = 'none';
+                document.getElementById('romantic-modal').style.display = 'flex';
+                startEffect();
+                createAmbientEffects();
+            });
+
+            const container = document.getElementById('content-container');
+            const words = [
+                "Te Quiero Mi Amor", "No me ignores", "Mi Amor", "Vic ❤ Persi", "Te amo", "Te Quiero", "My Love", 
+                "Mi Lugar Feliz", "Vic ❤ Persi", "#SomosUno", "Eres mi Todo", "Vic ❤ Persi", "Mi Corazón", 
+                "Vic ❤ Persi", "Mi Vida", "Te Adoro", "Mi Sol", "Vic ❤ Persi", "Mi Estrella", "Mi Sueño", 
+                "Mi Realidad", "Mi Pasión", "Vic ❤ Persi", "Mi Respiración", "Mi Destino", "Mi Futuro"
+            ];
+            const photoPaths = [
+                "https://i.postimg.cc/vmzMg2D7/1760657793625.jpg",
+                "https://i.postimg.cc/CKNYBrd7/1760657827231.jpg",
+                "https://i.postimg.cc/R0940xCq/1760657847691.jpg",
+                "https://i.postimg.cc/rpJc0ZzW/5873d13161c13f192c66e6d239fac0a9.jpg",
+                "https://i.postimg.cc/DzgFJpmG/9d6b4681d5b980e14360fa9411d0b3cf.jpg"
+                
+          
+            ];
+
+            function createElement(type, content) {
+                const element = document.createElement('div');
+                element.classList.add('element');
+                if (type === 'word') {
+                    element.innerText = content;
+                    if (colorIndex % 2 === 0) {
+                        element.classList.add('pink-neon');
+                    } else {
+                        element.classList.add('blue-neon');
+                    }
+                    colorIndex++;
+                } else if (type === 'photo') {
+                    element.classList.add('photo');
+                    const img = document.createElement('img');
+                    img.src = content;
+                    element.appendChild(img);
+                } else if (type === 'heart') {
+                    element.innerHTML = '&hearts;';
+                    element.classList.add('heart');
+                }
+
+                // Posición aleatoria pero centrada y distribuida
+                const centerX = 50;
+                const centerY = 50;
+                const radiusX = 40; // Rango horizontal desde el centro
+                const radiusY = 40; // Rango vertical desde el centro
+                const x = centerX + (Math.random() * 2 - 1) * radiusX;
+                const y = centerY + (Math.random() * 2 - 1) * radiusY;
+                element.style.left = `${x}%`;
+                element.style.top = `${y}%`;
+                element.style.animationDelay = `${Math.random() * 5}s`;
+
+                element.addEventListener('click', (e) => {
+                    createParticles(element, 25);
+                    element.classList.add('fade-out');
+                    setTimeout(() => {
+                        resetElement(element);
+                    }, 500);
+                });
+
+                container.appendChild(element);
+            }
+
+            function createParticles(target, count) {
+                const rect = target.getBoundingClientRect();
+                const x = rect.left + rect.width / 2;
+                const y = rect.top + rect.height / 2;
+
+                for (let i = 0; i < count; i++) {
+                    const particle = document.createElement('div');
+                    particle.classList.add('particle');
+                    particle.style.left = x + 'px';
+                    particle.style.top = y + 'px';
+                    const angle = Math.random() * 2 * Math.PI;
+                    const distance = 60 + Math.random() * 50;
+                    const dx = Math.cos(angle) * distance;
+                    const dy = Math.sin(angle) * distance;
+                    particle.style.setProperty('--dx', dx + 'px');
+                    particle.style.setProperty('--dy', dy + 'px');
+                    document.body.appendChild(particle);
+                    setTimeout(() => particle.remove(), 800);
+                }
+            }
+
+            function resetElement(element) {
+                element.classList.remove('fade-out');
+                const centerX = 50;
+                const centerY = 50;
+                const radiusX = 40;
+                const radiusY = 40;
+                const x = centerX + (Math.random() * 2 - 1) * radiusX;
+                const y = centerY + (Math.random() * 2 - 1) * radiusY;
+                element.style.left = `${x}%`;
+                element.style.top = `${y}%`;
+                element.style.animationDelay = `${Math.random() * 5}s`;
+            }
+
+            function startEffect() {
+                // Crear muchas palabras
+                for (let i = 0; i < 30; i++) {
+                    createElement('word', words[Math.floor(Math.random() * words.length)]);
+                }
+
+                // Crear fotos
+                for (let i = 0; i < 10; i++) {
+                    createElement('photo', photoPaths[Math.floor(Math.random() * photoPaths.length)]);
+                }
+
+                // Crear corazones
+                for (let i = 0; i < 15; i++) {
+                    createElement('heart', '');
+                }
+
+                // Animar todos los elementos con movimiento suave y centrado
+                const elements = document.querySelectorAll('.element');
+                elements.forEach(element => {
+                    let x = parseFloat(element.style.left);
+                    let y = parseFloat(element.style.top);
+                    let speedX = (Math.random() - 0.5) * 0.3;
+                    let speedY = (Math.random() - 0.5) * 0.3;
+
+                    function update() {
+                        x += speedX;
+                        y += speedY;
+                        if (x > 90 || x < 10) speedX *= -1;
+                        if (y > 90 || y < 10) speedY *= -1;
+                        element.style.left = `${x}%`;
+                        element.style.top = `${y}%`;
+                        requestAnimationFrame(update);
+                    }
+                    setTimeout(() => update(), parseFloat(element.style.animationDelay) * 1000 + 2000);
+                });
+            }
+
+            // Modal lógica
+            let noClicks = 0;
+            const bubbleMessages = [
+                "¡Porfa, perdóname! 🙏",
+                "No seas así, mi amor 😢",
+                "Vic ❤ Persi",
+                "¡Eres mi todo! 💜",
+                "Vic ❤ Persi💜",
+                "¿Un abrazo? 🤗",
+                "¡Vic ❤ Persi🍕",
+                "¡Eres la mejor! 😍",
+                "¿Me perdonas ya? 🥺",
+                "¡Última vez, lo juro! 😅"
+            ];
+
+            document.getElementById('modal-si-btn').addEventListener('click', () => {
+                document.getElementById('romantic-modal').style.display = 'none';
+                document.getElementById('happy-modal').style.display = 'flex';
+            });
+
+            document.getElementById('close-happy-btn').addEventListener('click', () => {
+                document.getElementById('happy-modal').style.display = 'none';
+            });
+
+            document.getElementById('modal-no-btn').addEventListener('click', (e) => {
+                noClicks++;
+                const bubble = document.createElement('div');
+                bubble.className = 'bubble';
+                bubble.innerText = bubbleMessages[Math.min(noClicks - 1, bubbleMessages.length - 1)];
+                const offsetX = (Math.random() - 0.5) * 100;
+                const offsetY = (Math.random() - 0.5) * 50;
+                bubble.style.left = `calc(50% + ${offsetX}px)`;
+                bubble.style.top = `calc(50% + ${offsetY}px)`;
+                document.getElementById('romantic-modal-content').appendChild(bubble);
+                setTimeout(() => bubble.remove(), 1200);
+
+                if (noClicks >= bubbleMessages.length) {
+                    document.getElementById('modal-no-btn').style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+    </head>
+<body>
+    <audio id="bg-music" loop autoplay>
+        <source src="en que falle.mp3" type="audio/mpeg">
+        Tu navegador no soporta el elemento de audio.
+    </audio>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const body = document.body;
+            const audio = document.getElementById('bg-music');
+            
+            // Configurar audio
+            audio.volume = 0.4;
+            audio.play().catch(e => console.log("La reproducción automática no está permitida"));
+
+ document.addEventListener('click', function() {
+                audio.play().catch(e => console.log("Audio no pudo reproducirse"));
+            }, { once: true });
+        });
+    </script>
+</body>
+</html>
+
